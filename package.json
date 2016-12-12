@@ -8,7 +8,7 @@
     "three-copyshader": "0.0.1"
   },
   "devDependencies": {
-    "three": "~0.82.0",
+    "three": "~0.82.0"
   },
   "repository": {
     "type": "git",
