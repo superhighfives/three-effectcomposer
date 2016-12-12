@@ -1,18 +1,14 @@
 {
-  "name": "three-effectcomposer",
+  "name": "three-effectcomposer-es6",
   "version": "0.0.1",
-  "description": "@alteredq's EffectComposer plugin for three.js ported for use with Browserify",
+  "description": "@alteredq's EffectComposer plugin for three.js ported for use with ES6",
   "main": "index.js",
-  "scripts": {
-    "demo": "node_modules/.bin/browserify demo.js -o bundle.js && echo 'open index.html'"
-  },
   "license": "MIT",
   "dependencies": {
     "three-copyshader": "0.0.1"
   },
   "devDependencies": {
-    "three": "~0.55.0",
-    "browserify": "*"
+    "three": "~0.82.0",
   },
   "repository": {
     "type": "git",
