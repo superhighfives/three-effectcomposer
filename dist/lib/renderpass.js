@@ -3,10 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.RenderPass = undefined;
 
 var _three = require('three');
 
-exports.default = function () {
+var RenderPass = exports.RenderPass = function RenderPass() {
   function RenderPass(scene, camera, overrideMaterial, clearColor, clearAlpha) {
     if (!(this instanceof RenderPass)) return new RenderPass(scene, camera, overrideMaterial, clearColor, clearAlpha);
 

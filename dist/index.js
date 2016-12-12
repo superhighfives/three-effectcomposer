@@ -52,119 +52,124 @@ Object.defineProperty(exports, 'ClearMaskPass', {
 
 var _three = require('three');
 
-exports.default = function () {
-  function EffectComposer(renderer, renderTarget) {
-    this.renderer = renderer;
+var _threeCopyshader2 = _interopRequireDefault(_threeCopyshader);
 
-    if (renderTarget === undefined) {
-      var width = window.innerWidth || 1;
-      var height = window.innerHeight || 1;
-      var parameters = { minFilter: _three.LinearFilter, magFilter: _three.LinearFilter, format: _three.RGBFormat, stencilBuffer: false };
+var _shaderpass2 = _interopRequireDefault(_shaderpass);
 
-      renderTarget = new _three.WebGLRenderTarget(width, height, parameters);
-    }
+var _maskpass2 = _interopRequireDefault(_maskpass);
 
-    this.renderTarget1 = renderTarget;
-    this.renderTarget2 = renderTarget.clone();
+var _clearmaskpass2 = _interopRequireDefault(_clearmaskpass);
 
-    this.writeBuffer = this.renderTarget1;
-    this.readBuffer = this.renderTarget2;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-    this.passes = [];
+function EffectComposer(renderer, renderTarget) {
+  this.renderer = renderer;
 
-    this.copyPass = new _shaderpass.ShaderPass(_threeCopyshader.CopyShader);
+  if (renderTarget === undefined) {
+    var width = window.innerWidth || 1;
+    var height = window.innerHeight || 1;
+    var parameters = { minFilter: _three.LinearFilter, magFilter: _three.LinearFilter, format: _three.RGBFormat, stencilBuffer: false };
+
+    renderTarget = new _three.WebGLRenderTarget(width, height, parameters);
   }
 
-  EffectComposer.prototype = {
-    swapBuffers: function swapBuffers() {
-      var tmp = this.readBuffer;
-      this.readBuffer = this.writeBuffer;
-      this.writeBuffer = tmp;
-    },
+  this.renderTarget1 = renderTarget;
+  this.renderTarget2 = renderTarget.clone();
 
-    addPass: function addPass(pass) {
-      this.passes.push(pass);
-    },
+  this.writeBuffer = this.renderTarget1;
+  this.readBuffer = this.renderTarget2;
 
-    insertPass: function insertPass(pass, index) {
-      this.passes.splice(index, 0, pass);
-    },
+  this.passes = [];
 
-    render: function render(delta) {
-      this.writeBuffer = this.renderTarget1;
-      this.readBuffer = this.renderTarget2;
+  this.copyPass = new _shaderpass2.default(_threeCopyshader2.default);
+}
 
-      var maskActive = false;
+EffectComposer.prototype.swapBuffers = function () {
+  var tmp = this.readBuffer;
+  this.readBuffer = this.writeBuffer;
+  this.writeBuffer = tmp;
+};
 
-      var _passes$length = this.passes.length,
-          pass = _passes$length.pass,
-          i = _passes$length.i,
-          il = _passes$length.il;
+EffectComposer.prototype.addPass = function (pass) {
+  this.passes.push(pass);
+};
+
+EffectComposer.prototype.insertPass = function (pass, index) {
+  this.passes.splice(index, 0, pass);
+};
+
+EffectComposer.prototype.render = function (delta) {
+  this.writeBuffer = this.renderTarget1;
+  this.readBuffer = this.renderTarget2;
+
+  var maskActive = false;
+
+  var _passes$length = this.passes.length,
+      pass = _passes$length.pass,
+      i = _passes$length.i,
+      il = _passes$length.il;
 
 
-      for (i = 0; i < il; i++) {
-        pass = this.passes[i];
+  for (i = 0; i < il; i++) {
+    pass = this.passes[i];
 
-        if (!pass.enabled) continue;
+    if (!pass.enabled) continue;
 
-        pass.render(this.renderer, this.writeBuffer, this.readBuffer, delta, maskActive);
+    pass.render(this.renderer, this.writeBuffer, this.readBuffer, delta, maskActive);
 
-        if (pass.needsSwap) {
-          if (maskActive) {
-            var context = this.renderer.context;
+    if (pass.needsSwap) {
+      if (maskActive) {
+        var context = this.renderer.context;
 
-            context.stencilFunc(context.NOTEQUAL, 1, 0xffffffff);
+        context.stencilFunc(context.NOTEQUAL, 1, 0xffffffff);
 
-            this.copyPass.render(this.renderer, this.writeBuffer, this.readBuffer, delta);
+        this.copyPass.render(this.renderer, this.writeBuffer, this.readBuffer, delta);
 
-            context.stencilFunc(context.EQUAL, 1, 0xffffffff);
-          }
-
-          this.swapBuffers();
-        }
-
-        if (pass instanceof _maskpass.MaskPass) {
-          maskActive = true;
-        } else if (pass instanceof _clearmaskpass.ClearMaskPass) {
-          maskActive = false;
-        }
-      }
-    },
-
-    reset: function reset(renderTarget) {
-      if (renderTarget === undefined) {
-        renderTarget = this.renderTarget1.clone();
-
-        renderTarget.width = window.innerWidth;
-        renderTarget.height = window.innerHeight;
+        context.stencilFunc(context.EQUAL, 1, 0xffffffff);
       }
 
-      this.renderTarget1 = renderTarget;
-      this.renderTarget2 = renderTarget.clone();
-
-      this.writeBuffer = this.renderTarget1;
-      this.readBuffer = this.renderTarget2;
-    },
-
-    setSize: function setSize(width, height) {
-      var renderTarget = this.renderTarget1.clone();
-
-      renderTarget.width = width;
-      renderTarget.height = height;
-
-      this.reset(renderTarget);
+      this.swapBuffers();
     }
 
-  };
-
-  // shared ortho camera
-
-  EffectComposer.camera = new _three.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-
-  EffectComposer.quad = new _three.Mesh(new _three.PlaneGeometry(2, 2), null);
-
-  EffectComposer.scene = new _three.Scene();
-  EffectComposer.scene.add(EffectComposer.quad);
-
-  return EffectComposer;
+    if (pass instanceof _maskpass2.default) {
+      maskActive = true;
+    } else if (pass instanceof _clearmaskpass2.default) {
+      maskActive = false;
+    }
+  }
 };
+
+EffectComposer.prototype.reset = function (renderTarget) {
+  if (renderTarget === undefined) {
+    renderTarget = this.renderTarget1.clone();
+
+    renderTarget.width = window.innerWidth;
+    renderTarget.height = window.innerHeight;
+  }
+
+  this.renderTarget1 = renderTarget;
+  this.renderTarget2 = renderTarget.clone();
+
+  this.writeBuffer = this.renderTarget1;
+  this.readBuffer = this.renderTarget2;
+};
+
+EffectComposer.prototype.setSize = function (width, height) {
+  var renderTarget = this.renderTarget1.clone();
+
+  renderTarget.width = width;
+  renderTarget.height = height;
+
+  this.reset(renderTarget);
+};
+
+// shared ortho camera
+
+EffectComposer.camera = new _three.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+EffectComposer.quad = new _three.Mesh(new _three.PlaneGeometry(2, 2), null);
+
+EffectComposer.scene = new _three.Scene();
+EffectComposer.scene.add(EffectComposer.quad);
+
+exports.default = EffectComposer;

@@ -4,7 +4,7 @@
 
 import { Color } from 'three'
 
-export default () => {
+export const RenderPass = () => {
   function RenderPass (scene, camera, overrideMaterial, clearColor, clearAlpha) {
     if (!(this instanceof RenderPass)) return new RenderPass(scene, camera, overrideMaterial, clearColor, clearAlpha)
 
