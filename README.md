@@ -9,32 +9,17 @@ and to [@hughsk](http://github.com/hughsk) for the Browserify-friendly version. 
 
 ## Installation ##
 
+TODO: Add to npm
+
 ``` bash
 npm install three-effectcomposer-es6
 ```
 
-## Running the Demo ##
-
-Install the dependencies and build the script:
-
-``` bash
-git clone git@github.com:hughsk/three-effectcomposer.git
-cd three-effectcomposer
-npm install -d
-npm run demo
-```
-
-Then just open up `index.html` to see the results.
-
 ## Usage ##
-
-This module doesn't touch the `THREE` object, instead you access the different
-pass classes through `EffectComposer`. For a working example, see
-[`demo.js`](https://github.com/hughsk/three-effectcomposer/blob/master/demo.js).
 
 ``` javascript
 import { WebGLRenderer, Scene, PerspectiveCamera } from 'three'
-import EffectComposer, { RenderPass, ShaderPass } from 'three-effectcomposer-es6'
+import EffectComposer, { RenderPass, ShaderPass, CopyShader } from 'three-effectcomposer-es6'
 
 init()
 animate()
@@ -52,12 +37,10 @@ function init() {
   composer = new EffectComposer(renderer)
   composer.addPass(new RenderPass(scene, camera))
 
-  // Redraw with a shader
-  const effect = new ShaderPass(DotScreenShader)
-  composer.addPass(effect)
+  // Add shaders! Celebrate
 
-  // And another shader, drawing to the screen at this point
-  var effect = new ShaderPass(RGBShiftShader)
+  // And draw to the screen
+  var effect = new ShaderPass(CopyShader)
   effect.renderToScreen = true
   composer.addPass(effect)
 };
