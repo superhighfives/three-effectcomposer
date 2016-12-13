@@ -5,12 +5,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ClearMaskPass = exports.MaskPass = exports.ShaderPass = exports.RenderPass = exports.CopyShader = undefined;
 
-var _threeCopyshader = require('three-copyshader');
+var _copyshader = require('./lib/copyshader');
 
 Object.defineProperty(exports, 'CopyShader', {
   enumerable: true,
   get: function get() {
-    return _threeCopyshader.CopyShader;
+    return _copyshader.CopyShader;
   }
 });
 
@@ -52,16 +52,6 @@ Object.defineProperty(exports, 'ClearMaskPass', {
 
 var _three = require('three');
 
-var _threeCopyshader2 = _interopRequireDefault(_threeCopyshader);
-
-var _shaderpass2 = _interopRequireDefault(_shaderpass);
-
-var _maskpass2 = _interopRequireDefault(_maskpass);
-
-var _clearmaskpass2 = _interopRequireDefault(_clearmaskpass);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function EffectComposer(renderer, renderTarget) {
   this.renderer = renderer;
 
@@ -81,7 +71,7 @@ function EffectComposer(renderer, renderTarget) {
 
   this.passes = [];
 
-  this.copyPass = new _shaderpass2.default(_threeCopyshader2.default);
+  this.copyPass = new _shaderpass.ShaderPass(_copyshader.CopyShader);
 }
 
 EffectComposer.prototype.swapBuffers = function () {
@@ -104,14 +94,8 @@ EffectComposer.prototype.render = function (delta) {
 
   var maskActive = false;
 
-  var _passes$length = this.passes.length,
-      pass = _passes$length.pass,
-      i = _passes$length.i,
-      il = _passes$length.il;
-
-
-  for (i = 0; i < il; i++) {
-    pass = this.passes[i];
+  for (var i = 0; i < this.passes.length; i++) {
+    var pass = this.passes[i];
 
     if (!pass.enabled) continue;
 
@@ -131,9 +115,9 @@ EffectComposer.prototype.render = function (delta) {
       this.swapBuffers();
     }
 
-    if (pass instanceof _maskpass2.default) {
+    if (pass instanceof _maskpass.MaskPass) {
       maskActive = true;
-    } else if (pass instanceof _clearmaskpass2.default) {
+    } else if (pass instanceof _clearmaskpass.ClearMaskPass) {
       maskActive = false;
     }
   }

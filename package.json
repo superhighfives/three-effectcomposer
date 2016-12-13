@@ -2,13 +2,10 @@
   "name": "three-effectcomposer-es6",
   "version": "0.0.1",
   "description": "@alteredq's EffectComposer plugin for three.js ported for use with ES6",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "license": "MIT",
   "scripts": {
     "build": "babel src --presets babel-preset-es2015 --out-dir dist"
-  },
-  "dependencies": {
-    "three-copyshader": "0.0.1"
   },
   "devDependencies": {
     "three": "~0.82.0"

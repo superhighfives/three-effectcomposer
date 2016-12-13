@@ -33,16 +33,16 @@ pass classes through `EffectComposer`. For a working example, see
 [`demo.js`](https://github.com/hughsk/three-effectcomposer/blob/master/demo.js).
 
 ``` javascript
-import { } from 'three'
-import EffectComposer, {} from 'three-effectcomposer-es6'
+import { WebGLRenderer, Scene, PerspectiveCamera } from 'three'
+import EffectComposer, { RenderPass, ShaderPass } from 'three-effectcomposer-es6'
 
 init()
 animate()
 
 function init() {
-  const renderer = new WebGLRenderer
-  const scene = new Scene
-  const camera = new PerspectiveCamera(70, window.innerWidth/window.innerHeight, 1, 1000);
+  const renderer = new WebGLRenderer()
+  const scene = new Scene()
+  const camera = new PerspectiveCamera(70, window.innerWidth/window.innerHeight, 1, 1000)
 
   // ...
   // The rest of your setup code, as per usual
