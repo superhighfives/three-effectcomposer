@@ -1,10 +1,10 @@
-# three-effectcomposer #
+# three-effectcomposer-es6 #
 
 ES6-friendly version of `THREE.EffectComposer`, which offers a quick
 GLSL post-processing implementation.
 
 Full credit goes to [@alteredq](http://github.com/alteredq) for writing this,
-and to [@hughsk] for the Browserify-friendly version. The original source can be found
+and to [@hughsk](http://github.com/hughsk) for the Browserify-friendly version. The original source can be found
 [here](http://mrdoob.github.com/three.js/examples/webgl_postprocessing.html).
 
 ## Installation ##
