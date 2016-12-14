@@ -24,6 +24,8 @@ import EffectComposer, { RenderPass, ShaderPass, CopyShader } from 'three-effect
 init()
 animate()
 
+let composer;
+
 function init() {
   const renderer = new WebGLRenderer()
   const scene = new Scene()
