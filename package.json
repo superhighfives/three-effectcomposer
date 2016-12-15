@@ -1,6 +1,6 @@
 {
   "name": "three-effectcomposer-es6",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "@alteredq's EffectComposer plugin for three.js ported for use with ES6",
   "main": "dist/index.js",
   "license": "MIT",
