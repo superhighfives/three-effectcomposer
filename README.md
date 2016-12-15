@@ -9,8 +9,6 @@ and to [@hughsk](http://github.com/hughsk) for the Browserify-friendly version. 
 
 ## Installation ##
 
-TODO: Add to npm
-
 ``` bash
 npm install three-effectcomposer-es6
 ```
@@ -21,36 +19,35 @@ npm install three-effectcomposer-es6
 import { WebGLRenderer, Scene, PerspectiveCamera } from 'three'
 import EffectComposer, { RenderPass, ShaderPass, CopyShader } from 'three-effectcomposer-es6'
 
-init()
-animate()
+class Main {
+  constructor () {
+    const renderer = new WebGLRenderer()
+    const scene = new Scene()
+    const camera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000)
 
-let composer;
+    // When you've made your scene, create your composer and first RenderPass
+    this.composer = new EffectComposer(renderer)
+    this.composer.addPass(new RenderPass(scene, camera))
 
-function init() {
-  const renderer = new WebGLRenderer()
-  const scene = new Scene()
-  const camera = new PerspectiveCamera(70, window.innerWidth/window.innerHeight, 1, 1000)
+    // Add shaders! Celebrate!
+    // const someShaderPass = new ShaderPass(SomeShader)
+    // someShaderPass.renderToScreen = true
+    // this.composer.addPass(someShaderPass)
 
-  // ...
-  // The rest of your setup code, as per usual
-  // ...
+    // And draw to the screen
+    const copyPass = new ShaderPass(CopyShader)
+    copyPass.renderToScreen = true
+    this.composer.addPass(copyPass)
+  }
 
-  // Create your composer and first RenderPass
-  composer = new EffectComposer(renderer)
-  composer.addPass(new RenderPass(scene, camera))
+  animate () {
+    // Instead of calling renderer.render, use
+    // composer.render instead:
+    this.composer.render()
+    window.requestAnimationFrame(this.animate)
+  }
+}
 
-  // Add shaders! Celebrate
-
-  // And draw to the screen
-  var effect = new ShaderPass(CopyShader)
-  effect.renderToScreen = true
-  composer.addPass(effect)
-};
-
-// Instead of calling renderer.render, use
-// composer.render instead:
-function animate() {
-  requestAnimationFrame(animate)
-  composer.render()
-};
+const main = new Main()
+main.animate()
 ```
