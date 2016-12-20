@@ -31,7 +31,6 @@ class Main {
 
     // Add shaders! Celebrate!
     // const someShaderPass = new ShaderPass(SomeShader)
-    // someShaderPass.renderToScreen = true
     // this.composer.addPass(someShaderPass)
 
     // And draw to the screen
